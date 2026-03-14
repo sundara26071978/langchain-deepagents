@@ -6,5 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "deepagents>=0.4.11",
+    "langchain-ollama>=1.0.1",
+    "python-dotenv>=1.2.2",
     "tavily-python>=0.7.23",
 ]
