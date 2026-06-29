@@ -17,7 +17,7 @@ tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 def internet_search(
     query: str,
     max_results: int = 5,
-    topic: Literal["general", "news", "finance"] = "general",
+    topic: Literal["general", "news", "finance","sports"] = "general",
     include_raw_content: bool = False,
 ):
     """Run a web search"""
@@ -41,13 +41,13 @@ Use this to run an internet search for a given query. You can specify the max nu
 
 
 agent = create_deep_agent(
-    model="ollama:qwen3.5",
+    model="ollama:gemma4:latest",
     tools=[internet_search],
     system_prompt=research_instructions,
     debug=True,
 )
-
-result = agent.invoke({"messages": [{"role": "user", "content": "What is ESG?"}]})
+print(agent)
+result = agent.invoke({"messages": [{"role": "user", "content": "What is deep agents in agentic ai?"}]})
 
 # Print the agent's response
 print(result["messages"][-1].content)

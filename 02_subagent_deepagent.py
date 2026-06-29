@@ -4,10 +4,11 @@ import os
 from typing import Literal
 from tavily import TavilyClient
 from deepagents import create_deep_agent
-
+from langchain.chat_models import init_chat_model
 load_dotenv()
 
 os.environ["OLLAMA_API_KEY"]=os.getenv("OLLAMA_API_KEY")
+os.environ["OLLAMA_BASE_URL"]=os.getenv("OLLAMA_BASE_URL")
 os.environ["TAVILY_API_KEY"]=os.getenv("TAVILY_API_KEY")
 
 
@@ -38,23 +39,27 @@ You have access to an internet search tool as your primary means of gathering in
 
 Use this to run an internet search for a given query. You can specify the max number of results to return, the topic, and whether raw content should be included.
 """
+model = init_chat_model(model="ollama:llama3.1:8b", base_url=os.environ["OLLAMA_BASE_URL"], api_key=os.environ["OLLAMA_API_KEY"])
 
 research_subagent = {
     "name": "research-agent",
     "description": "Used to research more in depth questions",
     "system_prompt": "You are a great researcher",
     "tools": [internet_search],
-    "model": "ollama:qwen3.5",  # Optional override, defaults to main agent model
+    "model": model,  # Optional override, defaults to main agent model
 }
 subagents = [research_subagent]
 
+
+
 agent = create_deep_agent(
-    model="ollama:qwen3.5",
+    model=model,
     subagents=subagents,
     debug=True,
 )
 
-result = agent.invoke({"messages": [{"role": "user", "content": "What is hermitian matrix?"}]})
+# result = agent.invoke({"messages": [{"role": "user", "content": "What is hermitian matrix?"}]})
+result = agent.invoke({"messages": [{"role": "user", "content": "What is orthogonal matrix?"}]})
 
 # Print the agent's response
 print(result["messages"][-1].content)

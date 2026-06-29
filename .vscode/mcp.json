@@ -1,0 +1,9 @@
+{
+	"servers": {
+		"my-mcp-server-799231c5": {
+			"url": "https://docs.langchain.com/mcp",
+			"type": "http"
+		}
+	},
+	"inputs": []
+}
